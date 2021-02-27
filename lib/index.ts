@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import { spawn } from 'child_process';
 
 export interface Directives {
@@ -15,14 +14,20 @@ export class Noder {
   private __forever = false;
 
   constructor(config?: { directives?: Directives; forever?: boolean }) {
-    if (config?.directives) this.__directives = config.directives;
-    if (config?.forever) this.__forever = config.forever;
+    if (config?.directives !== undefined) this.__directives = config.directives;
+    if (config?.forever !== undefined) this.__forever = config.forever;
   }
 
+  private __log = (msg: string) => console.log(`\x1B[34mnoder: ${msg}\x1B[m`);
+
   async start(path: string, ...args: string[]): Promise<void> {
+    this.__log(`${path} ${args.join(' ')}`);
+
     const proc = spawn(path, args, {
       stdio: [process.stdin, 'pipe', process.stderr],
     });
+
+    let ignoreExit = false;
 
     proc.stdout.on('data', d => {
       d = d.toString();
@@ -33,11 +38,39 @@ export class Noder {
       );
 
       if (d.includes(this.__directives.restart)) {
-        console.log('RESTART');
+        this.__log('restart requested; restarting...');
+        ignoreExit = true;
+        proc.kill('SIGINT');
+        this.start(path, ...args);
       }
 
       if (d.includes(this.__directives.terminate)) {
-        console.log('TERMINATE');
+        this.__log('terminate requested; terminating...');
+        ignoreExit = true;
+        proc.kill('SIGINT');
+      }
+    });
+
+    proc.on('exit', (code, signal) => {
+      if (ignoreExit) {
+        ignoreExit = false;
+        return;
+      }
+
+      if (this.__forever) {
+        this.__log(
+          `${
+            code !== null ? `code: ${code}` : `signal: ${signal}`
+          }; restarting due to forever mode...`
+        );
+
+        this.start(path, ...args);
+      } else {
+        this.__log(
+          `${
+            code !== null ? `code: ${code}` : `signal: ${signal}`
+          }; terminating...`
+        );
       }
     });
   }
