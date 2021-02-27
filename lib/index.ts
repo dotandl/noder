@@ -20,10 +20,10 @@ export class Noder {
 
   private __log = (msg: string) => console.log(`\x1B[34mnoder: ${msg}\x1B[m`);
 
-  async start(path: string, ...args: string[]): Promise<void> {
-    this.__log(`${path} ${args.join(' ')}`);
+  async start(command: string, ...args: string[]): Promise<void> {
+    this.__log(`${command} ${args.join(' ')}`);
 
-    const proc = spawn(path, args, {
+    const proc = spawn(command, args, {
       stdio: [process.stdin, 'pipe', process.stderr],
     });
 
@@ -40,14 +40,14 @@ export class Noder {
       if (d.includes(this.__directives.restart)) {
         this.__log('restart requested; restarting...');
         ignoreExit = true;
-        proc.kill('SIGINT');
-        this.start(path, ...args);
+        proc.kill('SIGTERM');
+        this.start(command, ...args);
       }
 
       if (d.includes(this.__directives.terminate)) {
         this.__log('terminate requested; terminating...');
         ignoreExit = true;
-        proc.kill('SIGINT');
+        proc.kill('SIGTERM');
       }
     });
 
@@ -64,7 +64,7 @@ export class Noder {
           }; restarting due to forever mode...`
         );
 
-        this.start(path, ...args);
+        this.start(command, ...args);
       } else {
         this.__log(
           `${
@@ -74,4 +74,7 @@ export class Noder {
       }
     });
   }
+
+  startNode = (path: string, ...args: string[]): Promise<void> =>
+    this.start(process.execPath, path, ...args);
 }
