@@ -1,0 +1,22 @@
+{
+  "name": "noder",
+  "version": "0.9.0",
+  "description": "Node script runner with self-restarting",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": "https://github.com/dotandl/noder",
+  "author": "dotandl <oskarzawidlak@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "tsc",
+    "start": "node .",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "eslint": "^7.20.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "prettier": "^2.2.1",
+    "typescript": "^4.2.2"
+  }
+}
