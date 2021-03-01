@@ -1,6 +1,6 @@
 import { spawn } from 'child_process';
 
-export interface Directives {
+interface Directives {
   restart?: string;
   terminate?: string;
 }

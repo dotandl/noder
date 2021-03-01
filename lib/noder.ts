@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import arg from 'arg';
 import fs from 'fs';
+import { validate } from 'jsonschema';
 import path from 'path';
 import { Noder } from '.';
 
@@ -66,7 +67,24 @@ interface Config {
   directives?: { restart?: string; terminate?: string };
 }
 
-const config: Config = { file: '' };
+let config: Config = { file: '' };
+
+if (fs.existsSync(path.join(process.cwd(), 'noder.json'))) {
+  args['--config'] = path.join(process.cwd(), 'noder.json');
+}
+
+if (args['--config']) {
+  const json = JSON.parse(fs.readFileSync(args['--config'], 'utf8'));
+  const schema = JSON.parse(
+    fs.readFileSync(path.join(__dirname, '../noder.schema.json'), 'utf8')
+  );
+
+  if (!validate(json, schema).valid) {
+    throw new TypeError('config file is invalid');
+  }
+
+  config = json;
+}
 
 if (args['--forever']) config.forever = args['--forever'];
 if (args['--no-node']) config.noNode = args['--no-node'];
@@ -81,8 +99,10 @@ if (args['--terminate'])
     ? (config.directives.terminate = args['--terminate'])
     : (config.directives = { terminate: args['--terminate'] });
 
-config.file = args._[0];
-config.args = args._.slice(1);
+if (args._.length > 0) {
+  config.file = args._[0];
+  config.args = args._.slice(1);
+}
 
 const noder = new Noder({
   forever: config.forever,
@@ -90,7 +110,7 @@ const noder = new Noder({
 });
 
 if (config.noNode) {
-  noder.start(config.file, ...config.args);
+  noder.start(config.file, ...(config.args || []));
 } else {
-  noder.startNode(config.file, ...config.args);
+  noder.startNode(config.file, ...(config.args || []));
 }

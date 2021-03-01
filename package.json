@@ -22,6 +22,7 @@
     "typescript": "^4.2.2"
   },
   "dependencies": {
-    "arg": "^5.0.0"
+    "arg": "^5.0.0",
+    "jsonschema": "^1.4.0"
   }
 }
