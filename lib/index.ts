@@ -1,8 +1,8 @@
 import { spawn } from 'child_process';
 
 export interface Directives {
-  restart: string;
-  terminate: string;
+  restart?: string;
+  terminate?: string;
 }
 
 export class Noder {
@@ -14,7 +14,11 @@ export class Noder {
   private __forever = false;
 
   constructor(config?: { directives?: Directives; forever?: boolean }) {
-    if (config?.directives !== undefined) this.__directives = config.directives;
+    if (config?.directives?.restart !== undefined)
+      this.__directives.restart = config.directives.restart;
+    if (config?.directives?.terminate !== undefined)
+      this.__directives.terminate = config.directives.terminate;
+
     if (config?.forever !== undefined) this.__forever = config.forever;
   }
 

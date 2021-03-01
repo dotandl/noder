@@ -4,6 +4,7 @@
   "description": "Node script runner with self-restarting",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": "dist/noder.js",
   "repository": "https://github.com/dotandl/noder",
   "author": "dotandl <oskarzawidlak@gmail.com>",
   "license": "MIT",
@@ -19,5 +20,8 @@
     "eslint-plugin-prettier": "^3.3.1",
     "prettier": "^2.2.1",
     "typescript": "^4.2.2"
+  },
+  "dependencies": {
+    "arg": "^5.0.0"
   }
 }
