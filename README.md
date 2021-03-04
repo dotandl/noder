@@ -3,6 +3,8 @@
 Simple node script that allows you to run scripts which are able to
 self-restart, self-terminate and run forever.
 
+[![NPM](https://nodei.co/npm/noder-restart.png)](https://nodejs.com/package/noder-restart)
+
 ## How does it work?
 
 noder listens to special directives on stdout stream. When the script wants to
@@ -13,12 +15,12 @@ noder catches it and restarts the script. So simple, isn't it?
 
 ```sh
 # GLOBAL
-$ npm i -g noder # using npm...
-$ yarn global add noder # ...or yarn
+$ npm i -g noder-restart # using npm...
+$ yarn global add noder-restart # ...or yarn
 
 # LOCAL
-$ npm i -D noder
-$ yarn add -D noder
+$ npm i -D noder-restart
+$ yarn add -D noder-restart
 ```
 
 ## Usage

@@ -1,6 +1,6 @@
 {
-  "name": "noder",
-  "version": "0.9.0",
+  "name": "noder-restart",
+  "version": "1.0.0",
   "description": "Node script runner with self-restarting",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
