@@ -1,7 +1,7 @@
 import { spawn } from 'child_process';
 import chokidar from 'chokidar';
 
-interface Directives {
+export interface Directives {
   restart?: string;
   terminate?: string;
 }
@@ -22,12 +22,12 @@ export class Noder {
   private __watch: string[] = [];
 
   constructor(config?: Config) {
-    if (config?.directives?.restart !== undefined)
+    if (config?.directives?.restart)
       this.__directives.restart = config.directives.restart;
-    if (config?.directives?.terminate !== undefined)
+    if (config?.directives?.terminate)
       this.__directives.terminate = config.directives.terminate;
 
-    if (config?.forever !== undefined) this.__forever = config.forever;
+    if (typeof config?.forever !== 'undefined') this.__forever = config.forever;
     if (config?.watch?.length) this.__watch = config.watch;
   }
 
@@ -44,7 +44,6 @@ export class Noder {
     let watcher: chokidar.FSWatcher;
 
     if (this.__watch) {
-      console.log(this.__watch);
       watcher = chokidar.watch(this.__watch, { ignoreInitial: true });
 
       const cb = async () => {
