@@ -14,6 +14,12 @@
     "forever": {
       "type": "boolean"
     },
+    "watch": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "noNode": {
       "type": "boolean"
     },

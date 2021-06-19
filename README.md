@@ -36,7 +36,7 @@ setTimeout(() => {
 
   // You can write everything in one line as well:
   // console.log('Restarting... [noder:restart]');
-})
+}, 1000);
 ```
 
 Then run it using noder:

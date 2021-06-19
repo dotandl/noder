@@ -5,21 +5,26 @@ import { validate } from 'jsonschema';
 import path from 'path';
 import { Noder } from '.';
 
-const args = arg({
-  '--help': Boolean,
-  '--version': Boolean,
-  '--forever': Boolean,
-  '--no-node': Boolean,
-  '--config': String,
-  '--restart': String,
-  '--terminate': String,
+const args = arg(
+  {
+    '--help': Boolean,
+    '--version': Boolean,
+    '--forever': Boolean,
+    '--watch': [String],
+    '--no-node': Boolean,
+    '--config': String,
+    '--restart': String,
+    '--terminate': String,
 
-  '-h': '--help',
-  '-v': '--version',
-  '-f': '--forever',
-  '-N': '--no-node',
-  '-c': '--config',
-});
+    '-h': '--help',
+    '-v': '--version',
+    '-f': '--forever',
+    '-w': '--watch',
+    '-N': '--no-node',
+    '-c': '--config',
+  },
+  { permissive: true }
+);
 
 if (args['--version']) {
   const { version } = JSON.parse(
@@ -41,13 +46,14 @@ The only thing you need to do that is to write console.log('[noder:restart]');
 noder can also run other scripts/programs (not only node),
 terminate them (like restart using console.log above) and run them in forever mode.
 
-Usage: noder [options] <script.js> [args]
+Usage: noder [options] <script/program name> [script/program args]
 
 Options:
   -h, --help\t - Displays noder's help
   -v, --version\t - Displays noder's version
   -f, --forever\t - Enables forever mode
-  -N, --no-node\t - Disables node script execution mode
+  -w, --watch\t - Defines glob patterns for watch mode
+  -N, --no-node\t - Disables node script execution mode (any program can be executed)
 \t\t   (you can execute any shell command)
   -c, --config\t - Loads custom config file
   --restart\t - Defines custom restart directive
@@ -63,6 +69,7 @@ interface Config {
   file: string;
   args?: string[];
   forever?: boolean;
+  watch?: string[];
   noNode?: boolean;
   directives?: { restart?: string; terminate?: string };
 }
@@ -87,6 +94,7 @@ if (args['--config']) {
 }
 
 if (args['--forever']) config.forever = args['--forever'];
+if (args['--watch']) config.watch = args['--watch'];
 if (args['--no-node']) config.noNode = args['--no-node'];
 
 if (args['--restart'])
@@ -106,6 +114,7 @@ if (args._.length > 0) {
 
 const noder = new Noder({
   forever: config.forever,
+  watch: config.watch,
   directives: config.directives,
 });
 
