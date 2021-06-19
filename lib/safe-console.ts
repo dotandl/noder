@@ -15,7 +15,7 @@ class Terminator {
   }
 }
 
-export function enable(directives: Directives): Terminator {
+export default (directives: Directives): Terminator => {
   const unsafeStdoutWrite = process.stdout.write;
 
   process.stdout.write = (str, encoding, cb?) => {
@@ -33,4 +33,4 @@ export function enable(directives: Directives): Terminator {
   };
 
   return new Terminator(directives, unsafeStdoutWrite);
-}
+};

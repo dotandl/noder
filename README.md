@@ -59,6 +59,37 @@ The script will be restarted every second.
 `console.log('[noder:restart]');` - restarts script  
 `console.log('[noder:terminate]');` - terminates script
 
+## Safe console
+
+You can enable safe console mode in the script run by noder. This mode prevents
+terminate/restart by accident by removing the directives from the stream while
+using `console.log`.
+
+Here's how to enable safe console:
+
+```js
+const { enableSafeConsole } = require('noder-restart');
+
+// Enable safe console mode
+// Note: if you configure noder to use custom terminate/restart directive
+// you will need to change the directives below. Otherwise leave everything as is.
+const terminator = enableSafeConsole({
+  restart: '[noder:restart]',
+  terminate: '[noder:terminate]'
+});
+
+// Now if you type:
+console.log('[noder:restart]');
+console.log('[noder:terminate]');
+// nothing happens!
+
+// Use terminator object to restart script
+terminator.restart();
+
+// In case you want to terminate your script, write:
+// terminator.terminate();
+```
+
 ## CLI
 
 Usage: `noder [options] <script> [script args]`

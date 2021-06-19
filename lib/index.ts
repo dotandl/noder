@@ -113,3 +113,5 @@ export class Noder {
   startNode = (path: string, ...args: string[]): Promise<void> =>
     this.start(process.execPath, path, ...args);
 }
+
+export * as enableSafeConsole from './safe-console';
