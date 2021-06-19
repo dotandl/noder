@@ -3,7 +3,7 @@
 Simple node script that allows you to run scripts which are able to
 self-restart, self-terminate and run forever.
 
-[![NPM](https://nodei.co/npm/noder-restart.png)](https://nodejs.com/package/noder-restart)
+[![NPM](https://nodei.co/npm/noder-restart.png)](https://npmjs.com/package/noder-restart)
 
 ## How does it work?
 
