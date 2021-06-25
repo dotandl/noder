@@ -90,6 +90,9 @@ terminator.restart();
 // terminator.terminate();
 ```
 
+_Note:_ You should install noder as a normal (not dev) dependency if you want to
+use safe console (**don't** add `-D` flag to the `npm i`/`yarn add` command).
+
 ## CLI
 
 Usage: `noder [options] <script> [script args]`
@@ -101,7 +104,7 @@ Options:
 - `-f`, `--forever` - Enables forever mode (it means the script will restart after crash/exit; you can quit it by terminating)
 - `-w`, `--watch` - Defines glob patterns for watch mode
 - `-N`, `--no-node` - Disables node script execution mode (you can execute every script/program)
-- `-c`, `--config` - Loads custom config file (the default one is `/current/woring/dir/noder.json` **if exists**)
+- `-c`, `--config` - Loads custom config file (the default one is `/current/working/dir/noder.json` **if exists**)
 - `--restart` - Defines custom restart directive
 - `--terminate` - Defines custom terminate directive
 

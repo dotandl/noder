@@ -114,4 +114,4 @@ export class Noder {
     this.start(process.execPath, path, ...args);
 }
 
-export * as enableSafeConsole from './safe-console';
+export { enableSafeConsole } from './safe-console';
