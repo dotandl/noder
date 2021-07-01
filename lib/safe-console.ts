@@ -16,7 +16,7 @@ class Terminator {
 }
 
 export function enableSafeConsole(directives: Directives): Terminator {
-  const unsafeStdoutWrite = process.stdout.write;
+  const unsafeStdoutWrite = process.stdout.write.bind(process.stdout);
 
   process.stdout.write = (str, encoding, cb?) => {
     if (typeof str === 'string') {
